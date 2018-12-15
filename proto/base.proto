@@ -1,0 +1,39 @@
+syntax="proto3";
+
+package proto;
+
+// service id
+enum ProtoCMD{
+	CMD_DEFAULT			= 0;
+	CMD_HEARTBEAT		= 1;
+	//登陆
+	CMD_LOGIN_REQ		= 1001;
+	CMD_LOGIN_RES		= 1002;
+	CMD_LOGINOUT_REQ	= 1003;
+	CMD_LOGINOUT_RES	= 1004;
+	CMD_CREATE_REQ		= 1005;
+	CMD_CREATE_RES		= 1006;
+}
+// 登陆状态
+enum LoginStatus{
+	LOGIN_SUCESS		= 0;	//成功
+	LOGIN_NO_USER		= 1;	//无用户
+	LOGIN_ERR_PASS		= 2;	//密码错误
+	LOGIN_NO_SERVER		= 3;	//无服务
+	
+}
+//创建玩家状态
+enum CreatePlayerStatus{
+	CREATE_SUCESS		= 0;	//成功
+	CREATE_EXIST		= 1;	//存在
+	CREATE_ILLEGAL		= 2;	//非法
+}
+// 玩家属性
+message PlayerAttr{
+	int32 user_id           = 1;	// 用户id
+    string nick_name        = 2;	// 昵称
+	int32 Level 			= 3;	// 等级
+	int32 Exp 			    = 4;	// 经验值
+	int32 Gold 			    = 5;	// 金币
+    int32 Diamond 		    = 6;	// 钻石
+}

@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package proto;
+import "base.proto";
+
+//cmd:1005
+message CreatePlayerReq{
+	string user_name = 1;
+	int32 length = 2;
+	int32 cnt = 3;
+}
+//cmd:1006
+message CreatePlayerRes{
+	CreatePlayerStatus status = 1;
+	PlayerAttr attr = 2;
+}
