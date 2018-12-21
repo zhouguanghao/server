@@ -1,11 +1,13 @@
 package login
 
 import (
-	"github.com/davyxu/cellnet"
-	"github.com/davyxu/cellnet/peer"
+	"github.com/davyxu/golog"
 )
 
-func relayLoginToAgent() {
-	queue := cellnet.NewEventQueue()
-	peer.NewGenericPeer("tcp.Connector")
+
+
+var log = golog.New("login")
+
+func init() {
 }
+

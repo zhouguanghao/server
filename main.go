@@ -3,11 +3,12 @@ package main
 import (
 	"github.com/davyxu/cellnet"
 	"github.com/davyxu/cellnet/peer"
-	_ "github.com/davyxu/cellnet/peer/mysql"
 	_ "github.com/davyxu/cellnet/peer/tcp"
 	"github.com/davyxu/cellnet/proc"
 	_ "github.com/davyxu/cellnet/proc/tcp"
 	"github.com/davyxu/golog"
+	_ "server/mysql"
+	_ "server/login"
 	"server/proto"
 	"time"
 )
@@ -26,7 +27,7 @@ func main() {
 	// 每一个连接收到的所有消息事件(cellnet.Event)都被派发到用户回调, 用户使用switch判断消息类型，并做出不同的处理
 	proc.BindProcessorHandler(p, "tcp.ltv", func(ev cellnet.Event) {
 
-		switch ev.Message().(type) {
+		switch msg := ev.Message().(type) {
 		// 有新的连接
 		case *cellnet.SessionAccepted:
 			log.Debugln("server accepted")
@@ -35,7 +36,7 @@ func main() {
 			log.Debugln("session closed: ", ev.Session().ID())
 		// 收到某个连接的ChatREQ消息
 		case *proto.LoginReq:
-
+			log.Debugln(msg)
 			// 准备回应的消息
 			ack := proto.LoginRes{
 				Status: proto.LoginStatus_LOGIN_SUCESS,       // 状态
@@ -48,7 +49,6 @@ func main() {
 					Diamond: 98,
 				},
 			}
-
 			// 在Peer上查询SessionAccessor接口，并遍历Peer上的所有连接，并发送回应消息（即广播消息）
 			p.(cellnet.SessionAccessor).VisitSession(func(ses cellnet.Session) bool {
 
