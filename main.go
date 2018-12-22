@@ -9,6 +9,7 @@ import (
 	"github.com/davyxu/golog"
 	_ "server/mysql"
 	_ "server/login"
+	_ "server/redis"
 	"server/proto"
 	"time"
 )
