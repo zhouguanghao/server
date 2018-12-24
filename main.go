@@ -50,6 +50,9 @@ func main() {
 					Diamond: 98,
 				},
 			}
+
+			p.(peer.SessionManager).Add(ev.Session())
+
 			// 在Peer上查询SessionAccessor接口，并遍历Peer上的所有连接，并发送回应消息（即广播消息）
 			p.(cellnet.SessionAccessor).VisitSession(func(ses cellnet.Session) bool {
 
