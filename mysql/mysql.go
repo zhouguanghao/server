@@ -12,6 +12,7 @@ var (
 )
 
 func init() {
+	log.Debugln("Mysql init.")
 	var err error
 	DB,err = sql.Open("mysql", "user:zgh1625347@tcp(127.0.0.1:3306)/user?charset=utf8")
 	if err != nil {
@@ -25,15 +26,6 @@ func init() {
 
 	DB.SetMaxOpenConns(100)
 	DB.SetMaxIdleConns(50)
-	log.Debugln("Mysql connect success")
 
 	GetAllPlayerInfo()
-
-	//p := new(Player)
-	//p.state = 0
-	//p.account = "dawda"
-	//p.password = "dawdwddf"
-	//p.CreatePlayer()
-	//p.GetPlayerData(p.account)
-	//log.Debugln(PlayerMap)
 }
