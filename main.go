@@ -26,15 +26,17 @@ var (
 	HTTP_ADDRESS = "0.0.0.0:3602"
 )
 
+func HttpCallback(ev cellnet.Event) {
+	switch ev.Message().(type) {
+	case *cellnet.SessionAccepted:
+		log.Debugln("server accepted")
+	}
+}
+
 func HttpPeer(ch chan<- int) {
 	queue := cellnet.NewEventQueue()
 	p := peer.NewGenericPeer("http.Acceptor", "WebServer", HTTP_ADDRESS, queue)
-	proc.BindProcessorHandler(p, "http", func(ev cellnet.Event) {
-		switch ev.Message().(type) {
-		case *cellnet.SessionAccepted:
-			log.Debugln("server accepted")
-		}
-	})
+	proc.BindProcessorHandler(p, "http", HttpCallback)
 	// 开始侦听
 	p.Start()
 	// 事件队列开始循环
@@ -63,7 +65,7 @@ func WsPeer(ch chan <- int) {
 	ch <- 3
 }
 
-func callback(ev cellnet.Event) {
+func TcpCallback(ev cellnet.Event) {
 	switch ev.Message().(type) {
 	// 有新的连接
 	case *cellnet.SessionAccepted:
@@ -87,7 +89,7 @@ func TcpPeer(ch chan<- int) {
 	p.(cellnet.TCPSocketOption).SetSocketDeadline(time.Second * 30, time.Second * 5)
 	// 设定封包收发处理的模式为tcp的ltv(Length-Type-Value), Length为封包大小，Type为消息ID，Value为消息内容
 	// 每一个连接收到的所有消息事件(cellnet.Event)都被派发到用户回调, 用户使用switch判断消息类型，并做出不同的处理
-	proc.BindProcessorHandler(p, "tcp.ltv", callback)
+	proc.BindProcessorHandler(p, "tcp.ltv", TcpCallback)
 
 	// 开始侦听
 	p.Start()
